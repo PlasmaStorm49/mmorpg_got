@@ -1,6 +1,6 @@
 const mongodb = require ('mongodb');
 
-const connMongodb = function(){
+const connMongoDB = function(){
     console.log('Conectado com o Banco de Dados')
     var db = new mongodb.Db(
         'got',
@@ -16,5 +16,5 @@ const connMongodb = function(){
 }
 
 module.exports = function(){
-    return connMongodb;
+    return connMongoDB;
 }

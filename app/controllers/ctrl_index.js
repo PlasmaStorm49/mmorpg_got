@@ -1,12 +1,16 @@
-module.exports.index = function(appliaction, req, res){
-    res.render('index', {validacao: {}});
+module.exports.index = function(application, req, res){
+    if(req.session.autorizado){
+        res.redirect('jogo')      
+    }else {    
+        res.render('index', {validacao: {}});
+    }
 };
 
-module.exports.autenticar = function(appliaction, req, res){
+module.exports.autenticar = function(application, req, res){
     var dadosForm = req.body;
 
-    req.assert('usuario', 'Usuário deve ser informado').notEmpty();
-    req.assert('senha','Senha deve ser informada').notEmpty();
+    req.assert('user', 'Usuário deve ser informado').notEmpty();
+    req.assert('password','Senha deve ser informada').notEmpty();
 
     var erros = req.validationErrors();
 
@@ -14,7 +18,11 @@ module.exports.autenticar = function(appliaction, req, res){
         res.render("index", {validacao : erros})
         return;
     }
+
+    var connection = application.config.connection;
+    var userDAO = new application.app.models.userDAO(connection);
+    userDAO.authenticate(dadosForm, req, res);
     
-    res.send('funcional2')
+    // res.send('funcional2')
 
 }

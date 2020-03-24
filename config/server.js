@@ -30,6 +30,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressValidator());
 
 app.use(expressSession({
+	secret: 'code132',
+	resave: false,
+	saveUninitialized: false 
 	
 }))
 
