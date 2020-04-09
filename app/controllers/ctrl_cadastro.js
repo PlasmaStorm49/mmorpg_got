@@ -20,8 +20,11 @@ module.exports.cadastrar = function(application, req, res){
     const connection = application.config.connection;
 
     const userDAO = new application.app.models.userDAO(connection);
+    const gameDAO = new application.app.models.gameDAO(connection);
 
     userDAO.insertUser(formData)
+    gameDAO.generateParameters(formData.user)
+
 
     res.send('Cadastro Confirmado')
 }
