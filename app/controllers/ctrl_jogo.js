@@ -3,9 +3,9 @@ module.exports.jogo = function(application, req, res){
         res.redirect("/")
         return
     }
-    let comando_invalido = false
-    if(req.query.comando_invalido == 'true'){
-        comando_invalido = true
+    let msg = ''
+    if(req.query.msg !== ''){
+        msg = req.query.msg
     }
 
 
@@ -16,7 +16,7 @@ module.exports.jogo = function(application, req, res){
     let user = req.session.user;
     let casa = req.session.house;
 
-    gameDAO.gameStart(res, user, casa, comando_invalido);
+    gameDAO.gameStart(res, user, casa, msg);
 };
 
 module.exports.sair = function(application,req, res){
@@ -57,9 +57,15 @@ module.exports.ordenar = function(application, req, res){
 
     let errors = req.validationErrors();
     if (errors){
-        res.redirect("jogo?comando_invalido=true")
+        res.redirect("jogo?msg=A")
         return
     }
-    console.log(formData)
-    res.send("okie")
+    let connection = application.config.connection
+    let gameDAO = new application.app.models.gameDAO(connection);
+
+    formData.user = req.session.user;
+    gameDAO.action(formData)
+
+    res.redirect("jogo?msg=B")
+
 }
