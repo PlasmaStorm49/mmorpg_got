@@ -41,10 +41,30 @@
 					method: 'get',
 					success: function (data){
 						$('#actions').html(data);
+
+						clearTimeout(timerId)
+						chronometer()
 					}
 			})
 		});
 	})
+
+	var timerId= null;
+
+	function chronometer  () {
+		$('.remaining_time').each(function(){
+			let seconds = $(this).html();
+			let actual_seconds = parseInt(seconds - 1);
+
+			if(actual_seconds < 0){
+				window.location.href = "/jogo?msg=C";
+			}else {
+				$(this).html(actual_seconds)
+			}
+
+		});
+		timerId = setTimeout(chronometer, 1000)
+	}
 	</script>
 
 	<body class="body-jogo">
@@ -66,6 +86,11 @@
 			<% if (msg == 'B') { %>
 				<div class="alert alert-info" id="msg">
 					<strong>Ação realizada com sucesso!</strong>
+				</div>
+			<% } %>
+			<% if (msg == 'C') { %>
+				<div class="alert alert-info" id="msg">
+					<strong>A ação foi concluida com sucesso!</strong>
 				</div>
 			<% } %>
 

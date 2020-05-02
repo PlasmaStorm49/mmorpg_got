@@ -42,7 +42,14 @@ module.exports.pergaminhos = function(application, req, res){
         res.redirect("/")
         return
     }
-    res.render("pergaminhos", {validacao : {}})
+
+
+    let user = req.session.user
+    let connection = application.config.connection
+    let gameDAO = new application.app.models.gameDAO(connection);
+
+    gameDAO.getactions(user, res);
+
 }
 
 module.exports.ordenar = function(application, req, res){

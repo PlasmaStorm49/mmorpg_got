@@ -40,17 +40,32 @@ gameDAO.prototype.action = function (action) {
 
             var tempo = null;
 
-            switch(action.action){
-                case 1 :tempo =  1 * 60 * 60000;
-                case 2 :tempo =  2 * 60 * 60000;
-                case 3 :tempo =  5 * 60 * 60000;
-                case 4 :tempo =  5 * 60 * 60000;
+            switch(parseInt(action.action)){
+                case 1 :tempo =  1 * 60 * 60000; break;
+                case 2 :tempo =  2 * 60 * 60000; break;
+                case 3 :tempo =  5 * 60 * 60000; break;
+                case 4 :tempo =  5 * 60 * 60000; break;
             }
             action.action_finish_time = date.getTime() + tempo
             collection.insert(action);
             mongoclient.close();
         })
     })
+}
+
+gameDAO.prototype.getactions = function (user, res) {
+
+    this._connection.open( function(err, mongoclient){
+        mongoclient.collection("actions", function (err, collection){
+            var date = Date.now()
+            collection.find({ user : user, action_finish_time : {$gt: date}}).toArray(function(err, result){
+                res.render("pergaminhos", {actions : result})
+
+                mongoclient.close();
+            })
+        })
+     })
+
 }
 
 

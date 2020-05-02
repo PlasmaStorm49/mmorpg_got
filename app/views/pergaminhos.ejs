@@ -2,9 +2,24 @@
 	<h3>Pergaminhos</h3>
 	
 	<ul>
-		<li>1 enforcamento(s) programado - <small>restam 00000 segundos - <a href="#">revogar ordem</a></small></li>
-		<li>2 aldeão(ões) em treinamento de magia - <small>restam 00000 segundos - <a href="#">revogar ordem</a></small></li>
-		<li>1 aldeão(ões) em treinamento de história - <small>restam 00000 segundos - <a href="#">revogar ordem</a></small></li>
-		<li>5 aldeão(ões) coletando recursos - <small>restam 00000 segundos - <a href="#">revogar ordem</a></small></li>
+		<% for (let i = 0; i < actions.length; i++) {
+			
+
+			let action_txt = " ";
+
+			switch (parseInt(actions[i].action)){
+				case 1: action_txt = 'aldeões coletando recursos'; break;
+				case 2: action_txt = 'enforcamentos programados'; break;
+				case 3: action_txt = 'aldeões em treinamento de história'; break;
+				case 4: action_txt = 'aldeãoões em treinamento de magia'; break;
+			}
+			var date = Date.now()
+			let remaining_seconds  = Math.round((actions[i].action_finish_time - date) / 1000)
+		%>
+
+			<li> <%= actions[i].amount%> <%=action_txt %>
+				<small>restam <span class = "remaining_time"> <%= remaining_seconds %> </span> segundos - <a href="#">revogar ordem</a></small>
+			</li>
+		<% } %>
 	</ul>
 </div>
